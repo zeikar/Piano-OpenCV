@@ -1,6 +1,7 @@
 #include <Leap.h>
 #include <iostream>
 #include <ctime>
+#include <cstdlib>
 
 #define ROCK 1
 #define SCISSOR 2
@@ -37,11 +38,10 @@ void MyListener::onFrame(const Leap::Controller & controller)
 	fingers[1] = hands[1].fingers();
 }
 
-int main()
+
+int mains()
 {
 	char keyInput;
-
-	srand(time(NULL));
 
 	std::cout << "program started." << std::endl;
 
