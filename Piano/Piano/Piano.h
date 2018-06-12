@@ -105,7 +105,8 @@ inline void Piano::releaseFinger(int pianoKeyboardIndex)
 
 inline void Piano::fillKeyboard(int x, int y, int color, int srcColor, Mat& frame, int maxY, int minY)
 {
-	Mat tempEdge = edgePiano;
+	Mat tempEdge;
+	edgePiano.copyTo(tempEdge);
 
 	int direction[][2] = {-1, 0, 0, -1, 0, 1, 1, 0};
 	

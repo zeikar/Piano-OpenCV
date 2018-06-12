@@ -5,12 +5,12 @@ int main()
 {
 	Piano piano;
 
-	for (int i = 0; i < PIANO_SIZE; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		piano.putFinger(i);
+		piano.putFinger(rand() % PIANO_SIZE);
 		piano.renderPiano();
-		waitKey();
-		piano.releaseFinger(i);
+		waitKey(20);
+		piano.releaseFinger(rand() % PIANO_SIZE);
 	}
 
 	waitKey();
