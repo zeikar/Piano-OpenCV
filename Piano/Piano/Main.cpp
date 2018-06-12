@@ -5,13 +5,13 @@ int main()
 {
 	Piano piano;
 
-	// 미를 누름
-	piano.putFinger(4);
-	piano.putFinger(5);
-	piano.putFinger(6);
-	// 화면에 출력
-	piano.renderPiano();
-
+	for (int i = 0; i < PIANO_SIZE; i++)
+	{
+		piano.putFinger(i);
+		piano.renderPiano();
+		waitKey();
+		piano.releaseFinger(i);
+	}
 
 	waitKey();
 	
