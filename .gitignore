@@ -336,3 +336,4 @@ ASALocalRun/
 Piano/Piano/Piano.vcxproj
 *.vcxproj
 *.vcxproj
+*.filters
