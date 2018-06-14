@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include "Constants.h"
+#include "fmodex\fmod.h"
 using namespace std;
 using namespace cv;
 
@@ -10,6 +11,7 @@ class Piano
 {
 public:
 	Piano();
+	~Piano();
 
 	// 화면에 표시
 	void renderPiano(cv::Mat &piano_map);
@@ -34,7 +36,21 @@ private:
 		true, false, true, false, true, true, false, true, false, true, false, true, 
 		true, false, true, false, true, true, false, true, false, true, false, true
 	};
+	
+	// fmod library for sound effects
+
+	FMOD_SYSTEM *g_System;					// 음악 및 소리 재생
+	FMOD_SOUND *g_Sound[PIANO_SIZE];		// 배경음악(효과음)의 개수
+	FMOD_CHANNEL *g_Channel[PIANO_SIZE];	// 동시재생될 개수
+
+	void initSound();
+	void releaseSound();
 };
+
+Piano::~Piano()
+{
+	releaseSound();
+}
 
 Piano::Piano()
 {
@@ -58,6 +74,9 @@ Piano::Piano()
 
 	// canny
 	threshold(pianoImage, edgePiano, 96, 255, THRESH_BINARY);
+
+	// init sound
+	initSound();
 }
 
 inline void Piano::renderPiano(cv::Mat &piano_map)
@@ -99,11 +118,23 @@ inline void Piano::renderPiano(cv::Mat &piano_map)
 
 inline void Piano::putFinger(int pianoKeyboardIndex)
 {
+	if (isFingerOn[pianoKeyboardIndex] == false)
+	{
+		// 소리 재생
+		FMOD_System_PlaySound(g_System, FMOD_CHANNEL_REUSE, g_Sound[pianoKeyboardIndex], 0, &g_Channel[pianoKeyboardIndex]);
+	}
+
 	isFingerOn[pianoKeyboardIndex] = true;
 }
 
 inline void Piano::releaseFinger(int pianoKeyboardIndex)
 {
+	if (isFingerOn[pianoKeyboardIndex] == true)
+	{
+		// 중지
+		FMOD_Channel_Stop(g_Channel[pianoKeyboardIndex]);
+	}
+
 	isFingerOn[pianoKeyboardIndex] = false;
 }
 
@@ -145,4 +176,89 @@ inline void Piano::fillKeyboard(int x, int y, int color, int srcColor, Mat& fram
 			}
 		}
 	}
+}
+
+inline void Piano::initSound()
+{
+	FMOD_System_Create(&g_System);
+	FMOD_System_Init(g_System, PIANO_SIZE, FMOD_INIT_NORMAL, nullptr);
+
+	const char* piano_key_files[] = {
+		"piano_keys\\203458__tesabob2001__a3.mp3",
+		"piano_keys\\203459__tesabob2001__a-5.mp3",
+		"piano_keys\\203460__tesabob2001__a-4.mp3",
+		"piano_keys\\203461__tesabob2001__a-3.mp3",
+		"piano_keys\\203462__tesabob2001__b4.mp3",
+		"piano_keys\\203463__tesabob2001__b3.mp3",
+		"piano_keys\\203464__tesabob2001__a5.mp3",
+		"piano_keys\\203465__tesabob2001__a4.mp3",
+		"piano_keys\\203466__tesabob2001__c-3.mp3",
+		"piano_keys\\203467__tesabob2001__b5.mp3",
+		"piano_keys\\203468__tesabob2001__f3.mp3",
+		"piano_keys\\203469__tesabob2001__f4.mp3",
+		"piano_keys\\203470__tesabob2001__e3.mp3",
+		"piano_keys\\203471__tesabob2001__e4.mp3",
+		"piano_keys\\203472__tesabob2001__d4.mp3",
+		"piano_keys\\203473__tesabob2001__d5.mp3",
+		"piano_keys\\203474__tesabob2001__f-4.mp3",
+		"piano_keys\\203475__tesabob2001__f-5.mp3",
+		"piano_keys\\203476__tesabob2001__e5.mp3",
+		"piano_keys\\203477__tesabob2001__f-3.mp3",
+		"piano_keys\\203478__tesabob2001__c4-middle-c.mp3",
+		"piano_keys\\203479__tesabob2001__c3.mp3",
+		"piano_keys\\203480__tesabob2001__c-5.mp3",
+		"piano_keys\\203481__tesabob2001__c-4.mp3",
+		"piano_keys\\203482__tesabob2001__d-4.mp3",
+		"piano_keys\\203483__tesabob2001__d-3.mp3",
+		"piano_keys\\203484__tesabob2001__c6.mp3",
+		"piano_keys\\203485__tesabob2001__c5.mp3",
+		"piano_keys\\203486__tesabob2001__d3.mp3",
+		"piano_keys\\203487__tesabob2001__d-5.mp3",
+		"piano_keys\\203488__tesabob2001__g-3.mp3",
+		"piano_keys\\203489__tesabob2001__f5.mp3",
+		"piano_keys\\203490__tesabob2001__g-5.mp3",
+		"piano_keys\\203491__tesabob2001__g-4.mp3",
+		"piano_keys\\203492__tesabob2001__g4.mp3",
+		"piano_keys\\203493__tesabob2001__g3.mp3",
+		"piano_keys\\203494__tesabob2001__piano-chromatic-scale.mp3",
+		"piano_keys\\203495__tesabob2001__g5.mp3",
+		"piano_keys\\203499__tesabob2001__f-5.mp3",
+		"piano_keys\\203500__tesabob2001__f-4.mp3",
+		"piano_keys\\203501__tesabob2001__f-3.mp3",
+		"piano_keys\\203502__tesabob2001__a-3.mp3",
+		"piano_keys\\68437__pinkyfinger__piano-a.wav",
+		"piano_keys\\68438__pinkyfinger__piano-b.wav",
+		"piano_keys\\68439__pinkyfinger__piano-bb.wav",
+		"piano_keys\\68440__pinkyfinger__piano-c.wav",
+		"piano_keys\\68441__pinkyfinger__piano-c.wav",
+		"piano_keys\\68442__pinkyfinger__piano-d.wav",
+		"piano_keys\\68443__pinkyfinger__piano-e.wav",
+		"piano_keys\\68444__pinkyfinger__piano-eb.wav",
+		"piano_keys\\68445__pinkyfinger__piano-f.wav",
+		"piano_keys\\68446__pinkyfinger__piano-f.wav",
+		"piano_keys\\68447__pinkyfinger__piano-g.wav",
+		"piano_keys\\68448__pinkyfinger__piano-g.wav"
+	};
+
+	const int piano_key_index[PIANO_SIZE] = {
+		21, 8,  28, 25, 12, 10, 40, 35, 30, 0, 41, 5, 
+		20, 23, 14, 24, 13, 11, 39, 34, 33, 7, 2, 4
+	};
+
+	for (int i = 0; i < PIANO_SIZE; i++)
+	{
+		FMOD_System_CreateStream(g_System, piano_key_files[piano_key_index[i]], FMOD_DEFAULT, 0, &g_Sound[i]);
+	}
+	
+	FMOD_System_Update(g_System);
+}
+
+inline void Piano::releaseSound()
+{
+	for (int i = 0; i < PIANO_SIZE; i++)
+	{
+		FMOD_Sound_Release(g_Sound[i]);
+	}
+	FMOD_System_Close(g_System);
+	FMOD_System_Release(g_System);
 }

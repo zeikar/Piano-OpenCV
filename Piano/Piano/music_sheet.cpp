@@ -70,8 +70,8 @@ void piano_map_init_DB(std::string &input_file, std::vector<cv::Mat> &piano_map)
 	for (int i = 0; i < piano_map.size(); i++)
 	{
 		cv::resize(piano_map[i], piano_map[i], cv::Size(WINDOW_WIDTH, PIANO_MAP_HEIGHT));
-		cv::imshow("test", piano_map[i]);
-		cv::waitKey();
+		//cv::imshow("test", piano_map[i]);
+		//cv::waitKey();
 	}
 }
 
