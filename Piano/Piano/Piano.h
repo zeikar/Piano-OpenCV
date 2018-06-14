@@ -12,7 +12,7 @@ public:
 	Piano();
 
 	// 화면에 표시
-	void renderPiano();
+	void renderPiano(cv::Mat &piano_map);
 	// 손가락을 올림
 	void putFinger(int pianoKeyboardIndex);
 	// 손가락을 뗌
@@ -54,12 +54,13 @@ Piano::Piano()
 
 	namedWindow(PROJECT_NAME, WINDOW_NORMAL);
 
+	cv::resizeWindow(PROJECT_NAME, cv::Size(WINDOW_WIDTH, WINDOW_HEIGHT));
 
 	// canny
 	threshold(pianoImage, edgePiano, 96, 255, THRESH_BINARY);
 }
 
-inline void Piano::renderPiano()
+inline void Piano::renderPiano(cv::Mat &piano_map)
 {
 	Mat frame;
 	pianoImage.copyTo(frame);
@@ -89,6 +90,9 @@ inline void Piano::renderPiano()
 			fillKeyboard(width + 5, height - 200, 70, 0, frame, 450, 255);
 		}
 	}
+
+	piano_map.copyTo(frame(
+		cv::Rect(0, 0, piano_map.cols, piano_map.rows)));
 
 	imshow(PROJECT_NAME, frame);
 }
