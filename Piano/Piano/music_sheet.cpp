@@ -28,17 +28,17 @@ void piano_map_init_video(std::vector<cv::Mat> &piano_map)
 	while (1)
 	{
 		//cv::setMouseCallback("test", CallBackFunc, NULL);
-		cv::resizeWindow(PROJECT_NAME, cv::Size(WINDOW_WIDTH, PIANO_MAP_HEIGHT));
+		cv::resizeWindow("Capture", cv::Size(WINDOW_WIDTH, PIANO_MAP_HEIGHT));
 		std::string temp_char;
 		video >> frame;//웹캡으로부터 한 프레임을 읽어옴  
 		cv::Mat temp_frame = frame.clone();
 
 		temp_char = std::to_string(index);
-
+		temp_char += "                                               Capture(A), End(Q)";
 		//index frame에 추가
 		cv::putText(temp_frame, temp_char, cv::Point(10, 40), 2, 1.0, cv::Scalar::all(255));
 		
-		imshow("test", temp_frame);
+		imshow("Capture", temp_frame);
 
 		key = cv::waitKey(30);
 
