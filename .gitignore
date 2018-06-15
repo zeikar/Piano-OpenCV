@@ -5,8 +5,6 @@
 
 LeapSDK/
 
-Piano.vcxproj
-
 # User-specific files
 *.suo
 *.user
@@ -332,8 +330,3 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-*.vcxproj
-Piano/Piano/Piano.vcxproj
-*.vcxproj
-*.vcxproj
-*.filters
