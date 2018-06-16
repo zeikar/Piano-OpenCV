@@ -21,6 +21,10 @@ bool FaceDetector::detect(int& currX) {
 	face_cascade.detectMultiScale(img, faces, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(140, 140));
 
 	//Show the results
+	/*if (faces.size() == 0) return false;
+	rectangle(img, faces[0].tl(), faces[0].br(), cv::Scalar(255, 0, 0), 2);
+	cv::imshow("test", img);
+	*/
 	// Draw circles on the detected faces
 
 	int length;	//radius of the face

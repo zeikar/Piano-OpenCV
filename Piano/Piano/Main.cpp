@@ -30,6 +30,9 @@ int main()
 	int tmpX = 0;
 	for (int i = 0; i < 9 * PLAY_RATE; i++)
 	{
+		if (i == 9 * PLAY_RATE-1) i = 0;
+		next_page = detector.detect(tmpX);
+		if (next_page) cout << "넘김" << endl;
 		cv::Mat temp_Map = piano_view(next_page, index, piano_map);
 
 		// 피아노 재생
@@ -45,10 +48,6 @@ int main()
 		{
 			piano.releaseFinger(notes[i / PLAY_RATE]);
 		}
-
-
-		if (!detector.detect(tmpX))
-			cout << "qwer";
 	
 	}
 
