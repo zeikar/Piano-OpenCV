@@ -3,6 +3,9 @@
 #include "FaceDetector.h"
 using namespace std;
 
+// 음악 재생률. 10이면 10프레임당 한 음을 재생함.
+const int PLAY_RATE = 10;
+
 int main()
 {
 	int notes[] = {
@@ -25,16 +28,25 @@ int main()
 	//윈도우에 콜백함수를 등록
 	cv::setMouseCallback(PROJECT_NAME, CallBackFunc, NULL);
 	int tmpX = 0;
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 9 * PLAY_RATE; i++)
 	{
 		cv::Mat temp_Map = piano_view(next_page, index, piano_map);
 
-		//piano.putFinger(rand() % PIANO_SIZE);
-		piano.putFinger(notes[i]);
+		// 피아노 재생
+		if (i % PLAY_RATE == 0)
+		{
+			piano.putFinger(notes[i / PLAY_RATE]);
+		}
 		piano.renderPiano(temp_Map);
 		waitKey(1);
-		//piano.releaseFinger(rand() % PIANO_SIZE);
-		piano.releaseFinger(notes[i]);
+		
+		// 피아노 재생
+		if (i % PLAY_RATE == PLAY_RATE - 1)
+		{
+			piano.releaseFinger(notes[i / PLAY_RATE]);
+		}
+
+
 		if (!detector.detect(tmpX))
 			cout << "qwer";
 	
