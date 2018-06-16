@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="FaceDetector.h" />
     <ClInclude Include="fmodex\fmod.h" />
     <ClInclude Include="fmodex\fmod.hpp" />
     <ClInclude Include="fmodex\fmod_codec.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Piano.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FaceDetector.cpp" />
     <ClCompile Include="HandRecognition.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>

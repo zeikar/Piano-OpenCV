@@ -1,5 +1,6 @@
 #include "Piano.h"
 #include "music_sheet.h"
+#include "FaceDetector.h"
 using namespace std;
 
 int main()
@@ -15,11 +16,15 @@ int main()
 	int index = 0;
 	//piano_map_init_video(piano_map);//camera capture Ver
 
+	//손명희추가
+	//얼굴인식을 위한 클래스
+	FaceDetector detector;
+
 	piano_map_init_DB(input_file, piano_map); // DB(폴더)Ver
 
 	//윈도우에 콜백함수를 등록
 	cv::setMouseCallback(PROJECT_NAME, CallBackFunc, NULL);
-	
+	int tmpX = 0;
 	for (int i = 0; i < 9; i++)
 	{
 		cv::Mat temp_Map = piano_view(next_page, index, piano_map);
@@ -27,9 +32,12 @@ int main()
 		//piano.putFinger(rand() % PIANO_SIZE);
 		piano.putFinger(notes[i]);
 		piano.renderPiano(temp_Map);
-		waitKey(300);		
+		waitKey(1);
 		//piano.releaseFinger(rand() % PIANO_SIZE);
 		piano.releaseFinger(notes[i]);
+		if (!detector.detect(tmpX))
+			cout << "qwer";
+	
 	}
 
 	waitKey();
