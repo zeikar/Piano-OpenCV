@@ -24,7 +24,7 @@ int main()
 	bool next_page = false;
 	int index = 0;
 
-	piano_map_init_video(piano_map);//camera capture Ver
+	//piano_map_init_video(piano_map);//camera capture Ver
 
 	//손명희추가
 	//얼굴인식을 위한 클래스
