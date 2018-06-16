@@ -48,12 +48,12 @@
     <ClInclude Include="FaceDetector.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="HandRecognition.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="HandRecognition.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="music_sheet.cpp">

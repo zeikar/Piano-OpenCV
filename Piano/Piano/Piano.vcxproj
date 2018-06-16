@@ -22,7 +22,7 @@
     <ProjectGuid>{A03849C9-7C8C-42E1-9C51-2ED977B7F220}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Piano</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -158,15 +158,12 @@
     <ClInclude Include="fmodex\fmod_errors.h" />
     <ClInclude Include="fmodex\fmod_memoryinfo.h" />
     <ClInclude Include="fmodex\fmod_output.h" />
+    <ClInclude Include="HandRecognition.h" />
     <ClInclude Include="music_sheet.h" />
     <ClInclude Include="Piano.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FaceDetector.cpp" />
-    <ClCompile Include="HandRecognition.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
