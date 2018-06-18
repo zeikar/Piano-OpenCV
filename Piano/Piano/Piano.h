@@ -132,7 +132,7 @@ inline void Piano::releaseFinger(int pianoKeyboardIndex)
 	if (isFingerOn[pianoKeyboardIndex] == true)
 	{
 		// ÁßÁö
-		FMOD_Channel_Stop(g_Channel[pianoKeyboardIndex]);
+		//FMOD_Channel_Stop(g_Channel[pianoKeyboardIndex]);
 	}
 
 	isFingerOn[pianoKeyboardIndex] = false;
