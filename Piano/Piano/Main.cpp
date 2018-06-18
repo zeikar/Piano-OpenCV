@@ -11,13 +11,14 @@ int NOW_RATE = 0;
 
 int main()
 {
+	Mat frame;
+	Piano piano;
 	Leap::Controller controller;
 
 	// paste the listener
 	MyListener listener;
 	controller.addListener(listener);
 
-	Piano piano;
 	vector<cv::Mat> piano_map;
 	string input_file = "twinkle_twinkle";
 
@@ -36,6 +37,7 @@ int main()
 	cv::setMouseCallback(PROJECT_NAME, CallBackFunc, NULL);
 
 	int tmpX = 0;
+	vector<double> fingerPos;
 
 	cout << "start the piano system" << endl;
 
@@ -50,9 +52,11 @@ int main()
 
 		// 피아노 재생
 		// 음 시작
-		piano.putFinger(listener.pressNotes());
+		if (listener.isPressed())
+			piano.putFinger(listener.pressNotes());
 
 		piano.renderPiano(temp_Map);
+		
 		waitKey(1);
 		
 		// 피아노 재생

@@ -6,6 +6,11 @@
 #include <cstdlib>
 #include <cmath>
 
+#define HAND_MIN_POSITION -250
+#define HAND_MAX_POSITION 250
+
+#define FINGER_VELOCITY 400
+
 using namespace std;
 using namespace Leap;
 
@@ -13,7 +18,7 @@ class MyListener : public Leap::Listener
 {
 private:
 	int prevNote = -1;
-	int currentNote = 0;
+	int currentNote = -1;
 
 	HandList hands;
 	FingerList fingers[2];
@@ -27,6 +32,9 @@ public:
 	virtual int pressNotes();
 	virtual int realeaseNotes();
 	virtual bool isNoteChanged();
+	virtual bool isPressed();
+
+	virtual vector<double> getPositions();
 };
 
 // connect the leap motion
@@ -53,30 +61,70 @@ void MyListener::onFrame(const Leap::Controller & controller)
 			if (hands[i].isValid())
 			{
 				// if finger is pressed
-				if (abs(hands[0].palmPosition().y - fingers[i][j].tipPosition().y) > 40)
+				if (fingers[i][j].tipVelocity().y < -FINGER_VELOCITY && (hands[0].palmPosition().y - fingers[i][j].tipPosition().y) > 30)
 				{
+					int pos = getThePainoPosition(fingers[i][j].tipPosition().x);
+					
 					// get the finger position in 2 dimension
-					currentNote = getThePainoPosition(fingers[i][j].tipPosition().x);
+					if (pos != currentNote)
+					{
+						prevNote = currentNote;
+						currentNote = pos;
+					}
+				}
+
+				// if finger is released
+				else if (fingers[i][j].tipVelocity().y > FINGER_VELOCITY)
+				{
+					int pos = getThePainoPosition(fingers[i][j].tipPosition().x);
+
+					if (pos == currentNote)
+					{
+						prevNote = currentNote;
+						currentNote = -1;
+					}
 				}
 			}
 		}
 	}
 }
 
+vector<double> MyListener::getPositions()
+{
+	vector<double> fingerList;
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (hands[i].isValid())
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if (fingers[i][j].isValid())
+				{
+					double fingerPos = fingers[i][j].tipPosition().x;
+					fingerList.push_back(fingerPos);
+				}
+			}
+		}
+	}
+
+	return fingerList;
+}
+
 int MyListener::getThePainoPosition(double _fingerPosition)
 {
 	double temp = 0;
 	
-	if (_fingerPosition > 300)
-		temp = 600;
+	if (_fingerPosition > HAND_MAX_POSITION)
+		temp = HAND_MAX_POSITION - HAND_MIN_POSITION;
 
-	else if (_fingerPosition < -300)
+	else if (_fingerPosition < HAND_MIN_POSITION)
 		temp = 0;
 
 	else
-		temp = _fingerPosition + 300;
+		temp = _fingerPosition - HAND_MIN_POSITION;
 
-	temp = temp / 600 * 14;
+	temp = temp / (HAND_MAX_POSITION - HAND_MIN_POSITION) * 24;
 
 	return int(round(temp));
 }
@@ -91,17 +139,12 @@ bool MyListener::isEnable()
 
 int MyListener::pressNotes()
 {
-	cout << "press " << currentNote << endl;
-
 	return currentNote;
 }
 
 int MyListener::realeaseNotes()
 {
 	int releaseNote = prevNote;
-
-	cout << "realease " << releaseNote << endl;
-
 	prevNote = currentNote;
 
 	return releaseNote;
@@ -113,4 +156,12 @@ bool MyListener::isNoteChanged()
 		return true;
 
 	return false;
+}
+
+bool MyListener::isPressed()
+{
+	if (currentNote == -1)
+		return false;
+
+	return true;
 }
